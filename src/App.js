@@ -1,9 +1,13 @@
 import React,{Component,Fragment} from 'react';
-import logo from './logo.svg';
+import {Button,Input,List}  from 'antd';
+//import logo from './logo.svg';
 import './App.css';
 import store from './store'
-import {Button,Input,List} from 'antd'
+//import {ADD_LIST_ITEM,CHNAGE_INPUT_VALUE,REMOVE_LIST_ITEM} from './store/actionTypes'
+import {addListItemAction,changeInputValueAction,removeListItemAction,initListData} from './store/actionCreator';
 import 'antd/dist/antd.css'
+import axios from 'axios'
+//import AppUI from './AppUI'
 class App extends React.Component{
   constructor(props){
     super(props);
@@ -16,33 +20,30 @@ class App extends React.Component{
    
 
   handleInputChange(e){
-    let  val=e.target.value;
-    const action={
-      type:"change_input_value",
-      value:val
-    }
-    store.dispatch(action);
-    this.addItem=this.addItem.bind(this);
-    this.removeItem=this.removeItem.bind(this);
+    let  value=e.target.value;
+    changeInputValueAction(value)
   }
   addItem(){
-    const action={
-      type:"add_list_item"
-    }
-    store.dispatch(action);
+    addListItemAction();
   }
   removeItem(index){
     console.log('index',index)
-    const action={
-      type:"remove_list_item",
-      index:index
-    }
-    store.dispatch(action);
+    removeListItemAction(index)
   }
   handleStoreChange(){
     this.setState(store.getState())
   }
+  componentWillMount(){
+    axios.get('http://node.itianhuihui.com/translate/lang/hot').then(res=>{
+      let data=res.data.data;
+      console.log('data',data)
+      initListData(data);
+    }).catch(e=>{
+      console.error(e);
+    })
+  }
   render(){
+    //return (<AppUI />)
     return (
      <div className='main' style={{width:'800px',margin:"20px auto"}}>
         <div className='top' style={{marginBottom:'20px'}}>
