@@ -26,6 +26,18 @@ export default (state=defaultState,action)=>{
         newState.list=action.data;
         return newState;
     }
-    
+
+    if(action.type=='INIT_DATA_SAGA'){
+        console.log('sage request')
+        let newState=JSON.parse(JSON.stringify(state));
+        //newState.list=action.data;
+        return newState;
+    }
+    if(action.type=='INIT_DATA_SUCCESS'){
+        console.log('sage success')
+        let newState=JSON.parse(JSON.stringify(state));
+        newState.list=action.data;
+        return newState;
+    }
     return state;
 }

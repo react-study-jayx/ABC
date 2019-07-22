@@ -4,7 +4,7 @@ import {Button,Input,List}  from 'antd';
 import './App.css';
 import store from './store'
 //import {ADD_LIST_ITEM,CHNAGE_INPUT_VALUE,REMOVE_LIST_ITEM} from './store/actionTypes'
-import {addListItemAction,changeInputValueAction,removeListItemAction,initListData} from './store/actionCreator';
+import {addListItemAction,changeInputValueAction,removeListItemAction,initListData,initListDataThunk} from './store/actionCreator';
 import 'antd/dist/antd.css'
 import axios from 'axios'
 //import AppUI from './AppUI'
@@ -32,15 +32,11 @@ class App extends React.Component{
   }
   handleStoreChange(){
     this.setState(store.getState())
-  }
+  } 
   componentWillMount(){
-    axios.get('http://node.itianhuihui.com/translate/lang/hot').then(res=>{
-      let data=res.data.data;
-      console.log('data',data)
-      initListData(data);
-    }).catch(e=>{
-      console.error(e);
-    })
+    store.dispatch({type:"INIT_DATA_SAGA",value:'test'})
+    /* let action=initListDataThunk();
+    store.dispatch(action); */
   }
   render(){
     //return (<AppUI />)

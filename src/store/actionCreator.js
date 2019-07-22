@@ -1,5 +1,6 @@
 import {ADD_LIST_ITEM,CHNAGE_INPUT_VALUE,REMOVE_LIST_ITEM,INIT_LIST_DATA} from './actionTypes'
 import store from './index'
+import axios from 'axios'
 export const changeInputValueAction=(value)=>{
     const action={
         type:CHNAGE_INPUT_VALUE,
@@ -29,3 +30,23 @@ export const initListData=(data=>{
     }
     store.dispatch(action)
 })
+
+export const initListDataSaga=(data=>{
+    const action={
+        type:INIT_LIST_DATA,
+        data:data
+    }
+    store.dispatch(action)
+})
+export const initListDataThunk=()=>{
+    return (dispatch)=>{
+        axios.get('http://node.itianhuihui.com/translate/lang/hot').then(res=>{
+            let data=res.data.data;
+            let action={
+                type:INIT_LIST_DATA,
+                data:data
+            }
+            dispatch(action)
+          })
+    }
+}
